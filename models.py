@@ -51,3 +51,9 @@ class Bill(Base):
 	amount = Column(Integer)
 	participants = relationship('User', secondary=bill_participants, backref='bills')
 	
+	def __init__(self, amount, participants):
+		self.amount = amount
+		self.participants = participants
+		
+	def __repr__(self):
+		return "Bill for $%s with participants: %s" % (self.amount, ", ".join(map(lambda p: p.name, self.participants)))

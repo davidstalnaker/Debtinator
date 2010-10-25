@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, escape, redirect, url_for, g
 from database import db_session, init_db
-from models import User
+from models import User, Bill
 app = Flask(__name__)
 app.secret_key = "\xb2\xd8c\xaf+S4+\xec\x90\x1e\xd6g\xd1\xce)\x06\xf9\x7f'\xadi\x99n"
 
@@ -61,12 +61,14 @@ def logout():
 @app.route('/createbill', methods=['GET', 'POST'])
 def create_bill():
 	if request.method == 'POST':
-		amount = request.form['amount']
-		participants = request.form.getlist('participants')
-		print(amount)
-		print(participants)
-		users = User.query.all()
-		return render_template('createbill.html', user = g.user, users = users)
+		amount = int(request.form['amount'])
+		participants = map(lambda username: User.query.filter(User.name == username).first(), request.form.getlist('participants'))
+		
+		bill = Bill(amount, participants)
+		
+		db_session.add(bill)
+		db_session.commit()
+		return redirect(url_for('index'))
 	else:
 		users = User.query.all()
 		return render_template('createbill.html', user = g.user, users = users)
