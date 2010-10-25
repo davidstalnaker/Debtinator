@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block userStatus %}
+{% if user %}
+	{{user.name}} | <a href="{{url_for('logout')}}">log out</a>
+{% else %}
+	<a href="{{url_for('login')}}">log in | <a href="{{url_for('register')}}">register</a></a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+		<h2>Login</h2>
+		{% for error in errors %}
+			<p>Error: {{error}}</p>
+		{% endfor %}
+		<form action="login" method="post">
+			<label for="username">Username: </label>
+			<input type="text" name="username" id="username"><br />
+			<label for="password">Password: </label>
+			<input type="password" name="password" id="password"><br />
+			<input type="submit" value="Log in" />
+		</form>
+{% endblock %}

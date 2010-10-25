@@ -1,0 +1,29 @@
+body {
+	margin: 0;
+}
+
+.header {
+	padding: 10px;
+	background-color: #3d3d82;
+	color: #ffffff;
+	font-size:1em;
+}
+
+.header h1 {
+	display: inline;
+	font-weight:normal;
+	font-size:3em;
+}
+
+.userStatus {
+	float:right;
+}
+
+.userStatus a {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+.content {
+	margin: 10px;
+}

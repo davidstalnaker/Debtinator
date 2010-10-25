@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block userStatus %}
+{% if user %}
+	{{user.name}} | <a href="{{url_for('logout')}}">log out</a>
+{% else %}
+	<a href="{{url_for('login')}}">log in | <a href="{{url_for('register')}}">register</a></a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1>Index</h1>
+    <a href="{{url_for('create_bill')}}">Create a bill</a>
+{% endblock %}
