@@ -27,3 +27,31 @@ body {
 .content {
 	margin: 10px;
 }
+
+.nameListContainer {
+	display: inline-block;
+}
+
+.nameList {
+	margin: 0.25em 0 0.25em 0;
+	display: block;
+	padding-left: 0;
+	list-style: none;
+}
+
+.nameListItem {
+	margin: 0 5px 5px 0;
+	padding: 4px;
+	list-style: none;
+	line-height: 1em;
+	float: left;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px; 
+	background: #c8caff;
+}
+
+.nameListItemRemove {
+	margin-left:.5em;
+	text-decoration: none;
+}

@@ -2,6 +2,24 @@
 
 {% block title %}Index{% endblock %}
 
+{% block head %}
+	<link rel="stylesheet" href="static/jquery.bsmselect.css" />
+	<script type="text/javascript" src="static/jquery.bsmselect.js"></script>
+	<script type="text/javascript">
+		$(function() {
+    		$("select[multiple]").bsmSelect({
+				highlight: 'highlight',
+				removeLabel: 'X',
+				containerClass: 'nameListContainer',			// Class for container that wraps this widget
+				listClass: 'nameList',                   		// Class for the list ($ol)
+				listItemClass: 'nameListItem',					// Class for the <li> list items
+				listItemLabelClass: 'nameListItemLabel',		// Class for the label text that appears in list items
+				removeClass: 'nameListItemRemove'				// Class given to the "remove" link
+    		});
+		});
+	</script>
+{% endblock %}
+
 {% block userStatus %}
 {% if user %}
 	{{user.name}} | <a href="{{url_for('logout')}}">log out</a>
