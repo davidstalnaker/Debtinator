@@ -44,6 +44,13 @@
 				{% endfor %}
 			</select><br />
 			
+			<label for="payer">Payer: </label>
+			<select name="payer" id="payer">
+				{% for user in users %}
+				<option value="{{user.name}}">{{user.name}}</option>
+				{% endfor %}
+			</select><br />
+			
 			<input type="submit" value="Create Bill" />
 		</form>
 {% endblock %}

@@ -63,8 +63,9 @@ def create_bill():
 	if request.method == 'POST':
 		amount = int(request.form['amount'])
 		participants = map(lambda username: User.query.filter(User.name == username).first(), request.form.getlist('participants'))
+		payer = User.query.filter(User.name == request.form['payer']).first()
 		
-		bill = Bill(amount, participants)
+		bill = Bill(amount, participants, payer)
 		
 		db_session.add(bill)
 		db_session.commit()

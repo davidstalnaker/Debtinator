@@ -50,10 +50,13 @@ class Bill(Base):
 	id = Column(Integer, primary_key = True)
 	amount = Column(Integer)
 	participants = relationship('User', secondary=bill_participants, backref='bills')
+	payer_id = Column(Integer, ForeignKey('users.id'))
+	payer = relationship('User', backref='paidBills')
 	
-	def __init__(self, amount, participants):
+	def __init__(self, amount, participants, payer):
 		self.amount = amount
 		self.participants = participants
+		self.payer = payer
 		
 	def __repr__(self):
-		return "Bill for $%s with participants: %s" % (self.amount, ", ".join(map(lambda p: p.name, self.participants)))
+		return "Bill for $%s with participants: %s and paid by %s" % (self.amount, ", ".join(map(lambda p: p.name, self.participants)), self.payer.name)
