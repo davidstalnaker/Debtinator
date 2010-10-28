@@ -17,4 +17,13 @@
     <p>{{bill}}</p>
     {% endfor %}
 	<p><a href="{{url_for('create_bill')}}">Create a bill</a></p>
+	
+    <h3>Debts</h3>
+    {% for debt in user.debtsTo %}
+    <p>{{debt}}</p>
+    {% endfor %}
+    {% for debt in user.debtsFrom %}
+    <p>{{debt}}</p>
+    {% endfor %}
+
 {% endblock %}

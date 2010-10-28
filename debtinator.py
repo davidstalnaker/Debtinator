@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, escape, redirect, url_for, g
 from database import db_session, init_db
-from models import User, Bill
+from models import User, Bill, Debt, parseMoney
 app = Flask(__name__)
 app.secret_key = "\xb2\xd8c\xaf+S4+\xec\x90\x1e\xd6g\xd1\xce)\x06\xf9\x7f'\xadi\x99n"
 
@@ -61,11 +61,30 @@ def logout():
 @app.route('/createbill', methods=['GET', 'POST'])
 def create_bill():
 	if request.method == 'POST':
-		amount = int(request.form['amount'])
+		amount = request.form['amount']
 		participants = map(lambda username: User.query.filter(User.name == username).first(), request.form.getlist('participants'))
 		payer = User.query.filter(User.name == request.form['payer']).first()
 		
 		bill = Bill(amount, participants, payer)
+		amountPer = (float(bill.amount) / 100) / len(participants)
+		for user in bill.participants:
+			if user != payer:
+				debt = Debt.query.filter(Debt.owee == payer).filter(Debt.ower == user).first()
+				print debt
+				if debt:
+					debt.amount += parseMoney(amountPer)
+				else:
+					debt = Debt.query.filter(Debt.owee == user).filter(Debt.ower == payer).first()
+					if debt:
+						debt.amount -= parseMoney(amountPer)
+						if(debt.amount < 0):
+						    debt.amount = -1 * debt.amount
+						    debt.owee = payer
+						    debt.ower = user
+					else:
+						debt = Debt(amountPer, user, payer)
+						db_session.add(debt)
+
 		
 		db_session.add(bill)
 		db_session.commit()
