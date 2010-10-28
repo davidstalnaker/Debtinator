@@ -27,6 +27,7 @@ def register():
 			db_session.add(newUser)
 			db_session.commit()
 			session['username'] = newUser.name
+			session.permanent = True
 			return redirect(url_for('index'))
 		else:
 			return render_template('register.html', user = g.user, errors=errors)
@@ -44,6 +45,7 @@ def login():
 		if user:
 			if user.testPassword(password):
 				session['username'] = user.name
+				session.permanent = True
 				return redirect(url_for('index'))
 			else:
 				errors.append('Incorrect password')
