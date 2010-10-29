@@ -18,11 +18,37 @@ def parseMoney(amount):
 def printMoney(intAmount):
 	return '$%d.%.2d' % (intAmount / 100, intAmount % 100)
 	
+def addDebt(owee, ower, amount, db_session):
+	print("adding debt")
+	# If the owee already is owed money, just add to the debt
+	debt = Debt.query.filter(Debt.owee == owee).filter(Debt.ower == ower).first()
+	if debt:
+		print("  adding to existing")
+		print("  debt is %s" % debt)
+		debt.amount += parseMoney(amount)
+	else:
+		# If the owee is already in debt, subtract from it and reverse if necessary
+		debt = Debt.query.filter(Debt.owee == ower).filter(Debt.ower == owee).first()
+		if debt:
+			print("  subtracting from existing")
+			print("  debt is %s" % debt)
+			debt.amount -= parseMoney(amount)
+			if(debt.amount < 0):
+				debt.amount = -1 * debt.amount
+				debt.owee = owee
+				debt.ower = ower
+		else:
+			print("  creating new")
+			#if no debt exists between these users, make one
+			debt = Debt(amount, ower, owee)
+			db_session.add(debt)
+	print("  debt now %d" % debt.amount)
+	return debt
 
 
 bill_participants = Table('bill_participants', Base.metadata,
-    Column('user_id', Integer, ForeignKey('users.id')),
-    Column('bill_id', Integer, ForeignKey('bills.id'))
+	Column('user_id', Integer, ForeignKey('users.id')),
+	Column('bill_id', Integer, ForeignKey('bills.id'))
 )
 
 class User(Base):
